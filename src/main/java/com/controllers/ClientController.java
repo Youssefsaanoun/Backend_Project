@@ -1,6 +1,7 @@
 package com.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,17 +17,15 @@ import com.models.*;
 import java.util.List;
 import java.util.UUID;
 
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/clients")
 public class ClientController {
 
     private final ClientIm clientIm;  
-    private final ProductIm productIm;  
 
     public ClientController(ClientIm clientIm, ProductIm productIm) {
         this.clientIm = clientIm;
-        this.productIm = productIm;
     }
 
     @PostMapping
@@ -54,22 +53,16 @@ public class ClientController {
         return ResponseEntity.noContent().build();
     }
 
-    // Ajouter un produit à un client (Many-to-Many)
-    @PostMapping("/{clientId}/addProduct/{productId}")
-    public ResponseEntity<Client> addProductToClient(@PathVariable UUID clientId, @PathVariable UUID productId) {
-        Client client = clientIm.getClientByID(clientId);
-        if (client == null) {
-            return ResponseEntity.notFound().build();
+  
+    @GetMapping("/{id}")
+    public  ResponseEntity <Client> getClientByID(@PathVariable UUID id ){
+        Client Cliente=clientIm.getClientByID(id);
+        if (Cliente==null) {
+            return ResponseEntity.noContent().build();}
+        else
+            return ResponseEntity.ok(Cliente);
+            
         }
 
-        product product = productIm.getproductByID(productId);
-        if (product == null) {
-            return ResponseEntity.notFound().build();
-        }
 
-        client.getProducts().add(product); 
-        Client updatedClient = clientIm.UpdateClient(client);
-
-        return ResponseEntity.ok(updatedClient);
-    }
 }

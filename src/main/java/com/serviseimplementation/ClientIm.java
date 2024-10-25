@@ -8,6 +8,9 @@ import com.repository.ClientRepository;
 import com.servise.ClientServise;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+@Service
+
 public class ClientIm implements ClientServise {
 
 private final ClientRepository clientRepository;

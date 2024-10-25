@@ -23,7 +23,7 @@ public class admin {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;  // Utilisation de UUID
+    private UUID id;  
     private String name;
     private String email;
     private String password;

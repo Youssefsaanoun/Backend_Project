@@ -3,13 +3,16 @@ package com.models;
 import java.util.List;
 import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -27,17 +30,16 @@ public class Client {
     @Id
     @GeneratedValue
     @UuidGenerator
-    private UUID id;  // Utilisation de UUID
+    private UUID id; 
     private String nom;
     private String prenom;
     private String email;
     private String address;
+    private String password;
 
-    @ManyToMany
-    @JoinTable(
-        name = "client_product",
-        joinColumns = @JoinColumn(name = "client_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<product> products;
+
+   @JsonIgnore
+   @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderProduct> Orders;
+    
 }

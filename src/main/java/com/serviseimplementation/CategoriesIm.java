@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.stereotype.Service;
+
 import com.models.Categories;
 import com.repository.CategoriesRepository;
 import com.servise.CategoriesServise;
+@Service
 
 public class CategoriesIm implements CategoriesServise {
     private final CategoriesRepository categoriesRepository;
@@ -47,7 +50,9 @@ public class CategoriesIm implements CategoriesServise {
     public Categories UpdateCategories(Categories Categories) {
         Optional <Categories> optional=categoriesRepository.findById(Categories.getId());
         if (optional.isPresent()){
-            return optional.get();
+            Categories existingcategory=optional.get();
+            existingcategory.setNom(Categories.getNom());
+            return categoriesRepository.save((existingcategory));
         }
         else
             return null;
